@@ -1,47 +1,43 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ref } from 'vue'
+
+const header = ref('Shopping List App')
+const editing = ref(false)
+const items = ref([
+  // { id: 1, label: '10 party hats' },
+  // { id: 2, label: '2 board games' },
+  // { id: 3, label: '20 cups' },
+])
+const newItem = ref('')
+const newItemHighPriority = ref(false)
+const saveItem = () => {
+  items.value.push({ id: items.value.length + 1, label: newItem.value })
+  newItem.value = ''
+}
+const doEdit = (e) => {
+  editing.value = e
+  newItem.value = ''
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="header">
+    <h1>{{ header }}</h1>
+    <button v-if="editing" class="btn" @click="doEdit(false)">Cancel</button>
+    <button v-else class="btn btn-primary" @click="doEdit(true)">Add Item</button>
+  </div>
+  <form class="add-item-form" v-if="editing" @submit.prevent="saveItem">
+    <input v-model.trim="newItem" type="text" placeholder="Add an item" />
+    <label>
+      <input type="checkbox" v-model="newItemHighPriority" />
+      High Priority
+    </label>
+    <button class="btn btn-primary">Save Item</button>
+  </form>
+  <ul>
+    <li v-for="({ id, label }, index) in items" :key="id">
+      {{ label }}
+    </li>
+  </ul>
+  <p v-if="!items.length">Nothing to see here</p>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
