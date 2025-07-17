@@ -1,4 +1,4 @@
-# vue-shopping-list
+# vue-to-do-list
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -43,9 +43,9 @@ npm run test:e2e -- tests/e2e/example.js
 # Runs the tests in debug mode
 npm run test:e2e -- --debug
 ```
-    
+
 ### Run Headed Component Tests with [Nightwatch Component Testing](https://nightwatchjs.org/guide/component-testing/introduction.html)
-  
+
 ```sh
 npm run test:unit
 npm run test:unit -- --headless # for headless testing
