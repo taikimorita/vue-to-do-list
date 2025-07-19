@@ -42,13 +42,13 @@ const togglePurchased = (item) => {
   </div>
   <form class="add-item-form" v-if="editing" @submit.prevent="saveItem">
     <input v-model.trim="newItem" type="text" placeholder="Add an item" />
+    <div class="counter">{{ characterCount }}/200</div>
     <label>
       <input type="checkbox" v-model="newItemHighPriority" />
       High Priority
     </label>
     <button :disabled="newItem.length === 0" class="btn btn-primary">Save Item</button>
   </form>
-  <p class="counter">{{ characterCount }}/200</p>
   <ul>
     <li
       v-for="(item, index) in reversedItems"
