@@ -1,36 +1,26 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useTodoStore } from './stores/todo'
 
 const header = ref('To-Do List')
-const characterCount = computed(() => {
-  return newItem.value.length
-})
+const characterCount = computed(() => newItem.value.length)
 const editing = ref(false)
-const items = ref([
-  { id: 1, label: '10 party hats', purchased: true, highPriority: false },
-  { id: 2, label: '2 board games', purchased: true, highPriority: false },
-  { id: 3, label: '20 cups', purchased: false, highPriority: true },
-])
-const reversedItems = computed(() => [...items.value].reverse())
 const newItem = ref('')
 const newItemHighPriority = ref(false)
+const store = useTodoStore()
 const saveItem = () => {
-  items.value.push({
-    id: items.value.length + 1,
-    label: newItem.value,
-    highPriority: newItemHighPriority.value,
-  })
+  store.addItem(newItem.value, newItemHighPriority.value)
   newItem.value = ''
-  newItemHighPriority.value = ''
+  newItemHighPriority.value = false
 }
 const doEdit = (e) => {
   editing.value = e
   newItem.value = ''
-  newItemHighPriority.value = ''
+  newItemHighPriority.value = false
 }
 
 const togglePurchased = (item) => {
-  item.purchased = !item.purchased
+  store.togglePurchased(item.id)
 }
 </script>
 
@@ -51,7 +41,7 @@ const togglePurchased = (item) => {
   </form>
   <ul>
     <li
-      v-for="(item, index) in reversedItems"
+      v-for="(item, index) in store.reversedItems"
       @click="togglePurchased(item)"
       :key="item.id"
       class="static-class"
@@ -60,5 +50,5 @@ const togglePurchased = (item) => {
       {{ item.label }}
     </li>
   </ul>
-  <p v-if="!items.length">Nothing to see here</p>
+  <p v-if="!store.items.length">Nothing to see here</p>
 </template>
