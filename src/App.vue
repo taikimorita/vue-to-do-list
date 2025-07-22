@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useTodoStore } from './stores/todo'
+import trashIcon from './assets/delete.svg'
 
 const header = ref('To-Do List')
 const characterCount = computed(() => newItem.value.length)
@@ -17,6 +18,31 @@ const doEdit = (e) => {
   editing.value = e
   newItem.value = ''
   newItemHighPriority.value = false
+}
+
+const showConfirm = ref(false)
+const itemToDelete = ref(null)
+
+const askDelete = (item, event) => {
+  if (event.shiftKey) {
+    store.deleteItem(item.id)
+  } else {
+    itemToDelete.value = item
+    showConfirm.value = true
+  }
+}
+
+const confirmDelete = () => {
+  if (itemToDelete.value) {
+    store.deleteItem(itemToDelete.value.id)
+  }
+  showConfirm.value = false
+  itemToDelete.value = null
+}
+
+const cancelDelete = () => {
+  showConfirm.value = false
+  itemToDelete.value = null
 }
 
 const togglePurchased = (item) => {
@@ -48,7 +74,26 @@ const togglePurchased = (item) => {
       :class="{ strikeout: item.purchased, priority: item.highPriority }"
     >
       {{ item.label }}
+      <img
+        :src="trashIcon"
+        alt="Delete"
+        class="trash"
+        @click.stop="askDelete(item, $event)"
+        title="Delete"
+      />
     </li>
   </ul>
+  <div v-if="showConfirm" class="model-overlay">
+    <div class="modal">
+      <p>
+        Are you sure you want to delete "<strong>{{ itemToDelete.label }}</strong
+        >"?
+      </p>
+      <div class="model-buttons">
+        <button class="btn btn-danger" @click="confirmDelete">Yes</button>
+        <button class="btn" @click="cancelDelete">No</button>
+      </div>
+    </div>
+  </div>
   <p v-if="!store.items.length">Nothing to see here</p>
 </template>

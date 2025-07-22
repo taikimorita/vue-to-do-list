@@ -171,3 +171,86 @@ input[type='checkbox'] {
   box-shadow: none;
   width: auto;
 }
+
+.todo-item {
+  position: relative;
+  padding-right: 2rem;
+}
+
+.todo-item .trash {
+  position: absolute;
+  right: 0;
+  display: none;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  transition: transform 0.1s ease-in;
+}
+
+.todo-item:hover .trash {
+  display: inline;
+}
+
+.todo-item .trash:hover {
+  transform: scale(1.2);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal {
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 6px;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  font-size: 1.1rem;
+  color: #3d4852;
+}
+
+.modal-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn-danger {
+  background-color: #e3342f;
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #cc1f1a;
+}
+
+.modal {
+  animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

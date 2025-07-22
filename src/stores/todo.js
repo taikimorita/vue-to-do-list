@@ -25,6 +25,10 @@ export const useTodoStore = defineStore(
       })
     }
 
+    function deleteItem(itemId) {
+      items.value = items.value.filter((item) => item.id !== itemId)
+    }
+
     function togglePurchased(itemId) {
       const item = items.value.find((i) => i.id === itemId)
       if (item) item.purchased = !item.purchased
@@ -35,6 +39,7 @@ export const useTodoStore = defineStore(
       reversedItems,
       addItem,
       togglePurchased,
+      deleteItem,
     }
   },
   {
