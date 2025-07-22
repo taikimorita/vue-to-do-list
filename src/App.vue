@@ -56,24 +56,32 @@ const togglePurchased = (item) => {
     <button v-if="editing" class="btn" @click="doEdit(false)">Cancel</button>
     <button v-else class="btn btn-primary" @click="doEdit(true)">Add Item</button>
   </div>
+
   <form class="add-item-form" v-if="editing" @submit.prevent="saveItem">
-    <input v-model.trim="newItem" type="text" placeholder="Add an item" />
-    <div class="counter">{{ characterCount }}/200</div>
-    <label>
-      <input type="checkbox" v-model="newItemHighPriority" />
-      High Priority
-    </label>
+    <div class="input-block">
+      <input v-model.trim="newItem" type="text" placeholder="Add an item" maxlength="200" />
+      <div class="form-footer">
+        <div class="counter">{{ characterCount }}/200</div>
+        <label class="priority-checkbox">
+          <input type="checkbox" v-model="newItemHighPriority" />
+          High Priority
+        </label>
+      </div>
+    </div>
+
     <button :disabled="newItem.length === 0" class="btn btn-primary">Save Item</button>
   </form>
+
   <ul>
     <li
       v-for="(item, index) in store.reversedItems"
-      @click="togglePurchased(item)"
       :key="item.id"
-      class="static-class"
+      class="todo-item static-class"
       :class="{ strikeout: item.purchased, priority: item.highPriority }"
     >
-      {{ item.label }}
+      <span @click="togglePurchased(item)">
+        {{ item.label }}
+      </span>
       <img
         :src="trashIcon"
         alt="Delete"

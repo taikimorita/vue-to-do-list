@@ -1,7 +1,7 @@
 body {
   /* background: linear-gradient(120deg, #42b883, #35495e); */
   height: 100vh;
-  width: 100vw;
+  width: 60vw;
   font-family:
     system-ui,
     BlinkMacSystemFont,
@@ -18,14 +18,21 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
+}
+
+.input-block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .counter {
   font-size: 1rem;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 4px;
+  color: #606f7b;
+  margin-top: 2px;
 }
 
 #app {
@@ -98,12 +105,13 @@ li input {
 .add-item-form,
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  padding: 0.5rem;
 }
 
 .add-item-form input {
-  width: 70%;
+  width: 95%;
   border-radius: 3px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   border: 1px solid #f1f5f8;
@@ -118,7 +126,7 @@ li input {
 .btn {
   border: none;
   border-radius: 3px;
-  margin: auto 0;
+  margin: 0.5rem 0;
   padding: 0.5rem 0.75rem;
   flex-shrink: 0;
   cursor: pointer;
@@ -172,14 +180,31 @@ input[type='checkbox'] {
   width: auto;
 }
 
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1px;
+}
+
+.priority-checkbox {
+  margin-right: 3rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0.03rem;
+  padding: 0.1rem;
   position: relative;
-  padding-right: 2rem;
 }
 
 .todo-item .trash {
-  position: absolute;
-  right: 0;
   display: none;
   cursor: pointer;
   margin-left: 0.5rem;
