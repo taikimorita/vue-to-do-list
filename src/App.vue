@@ -24,7 +24,7 @@ const showConfirm = ref(false)
 const itemToDelete = ref(null)
 
 const askDelete = (item, event) => {
-  if (event.shiftKey) {
+  if (event.ctrlKey) {
     store.deleteItem(item.id)
   } else {
     itemToDelete.value = item
