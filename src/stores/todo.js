@@ -4,20 +4,25 @@ import { ref, computed } from 'vue'
 export const useTodoStore = defineStore(
   'todo',
   () => {
+    // List of current to-do items
     const items = ref([
       { id: 1, label: 'Clean Bathroom', purchased: true, highPriority: false },
       { id: 2, label: 'Get Groceries', purchased: true, highPriority: false },
       { id: 3, label: 'Do Homework', purchased: false, highPriority: true },
     ])
 
+    // Record of all actions performed
     const history = ref([])
 
+    // Generate next available ID
     const newItemId = computed(() =>
       items.value.length ? Math.max(...items.value.map((i) => i.id)) + 1 : 1,
     )
 
+    // Show most recent items first
     const reversedItems = computed(() => [...items.value].reverse())
 
+    // Add new item and log to history
     function addItem(label, highPriority) {
       items.value.push({
         id: newItemId.value,
@@ -34,6 +39,7 @@ export const useTodoStore = defineStore(
       })
     }
 
+    // Delete item and log to history
     function deleteItem(itemId) {
       const item = items.value.find((i) => i.id === itemId)
       if (item) {
@@ -48,11 +54,13 @@ export const useTodoStore = defineStore(
       }
     }
 
+    // Toggle item's purchased status
     function togglePurchased(itemId) {
       const item = items.value.find((i) => i.id === itemId)
       if (item) item.purchased = !item.purchased
     }
 
+    // Expose state and actions
     return {
       items,
       reversedItems,
@@ -63,6 +71,6 @@ export const useTodoStore = defineStore(
     }
   },
   {
-    persist: true,
+    persist: true, // Store data persistently (e.g., in localStorage)
   },
 )

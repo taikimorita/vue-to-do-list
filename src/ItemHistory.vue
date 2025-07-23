@@ -11,6 +11,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- Display each history entry -->
         <tr v-for="(record, index) in history" :key="index">
           <td :class="{ 'high-priority-text': record.highPriority }">
             {{ record.label }}
@@ -25,6 +26,7 @@
 </template>
 
 <script setup>
+// Import and access todo history from store
 import { useTodoStore } from './stores/todo'
 
 const store = useTodoStore()
@@ -44,6 +46,7 @@ td {
   border-bottom: 1px solid #ccc;
 }
 
+/* Highlight high-priority items */
 .high-priority-text {
   color: #de751f;
   font-weight: bold;

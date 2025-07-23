@@ -3,6 +3,7 @@ import App from './App.vue'
 import ToDoList from './ToDoList.vue'
 import ItemHistory from './ItemHistory.vue'
 
+// Define routes for app
 const routes = [
   {
     path: '/',
@@ -14,6 +15,7 @@ const routes = [
   },
 ]
 
+// Create and export router
 export const router = createRouter({
   history: createWebHistory(),
   routes,

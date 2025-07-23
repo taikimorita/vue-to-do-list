@@ -3,12 +3,16 @@ import { ref, computed } from 'vue'
 import { useTodoStore } from './stores/todo'
 import trashIcon from './assets/delete.svg'
 
+// Input field and flags
 const newItem = ref('')
 const characterCount = computed(() => newItem.value.length)
 const editing = ref(false)
 const newItemHighPriority = ref(false)
+
+// Pinia store instance
 const store = useTodoStore()
 
+// Save a new item to the store
 const saveItem = () => {
   store.addItem(newItem.value, newItemHighPriority.value)
   newItem.value = ''
@@ -16,15 +20,18 @@ const saveItem = () => {
   document.activeElement.blur()
 }
 
+// Start or cancel edit mode
 const doEdit = (e) => {
   editing.value = e
   newItem.value = ''
   newItemHighPriority.value = false
 }
 
+// Modal confirmation state
 const showConfirm = ref(false)
 const itemToDelete = ref(null)
 
+// Show confirm modal or delete immediately if Ctrl is held
 const askDelete = (item, event) => {
   if (event.ctrlKey) {
     store.deleteItem(item.id)
@@ -34,6 +41,7 @@ const askDelete = (item, event) => {
   }
 }
 
+// Confirm deletion after modal prompt
 const confirmDelete = () => {
   if (itemToDelete.value) {
     store.deleteItem(itemToDelete.value.id)
@@ -42,23 +50,27 @@ const confirmDelete = () => {
   itemToDelete.value = null
 }
 
+// Cancel the deletion prompt
 const cancelDelete = () => {
   showConfirm.value = false
   itemToDelete.value = null
 }
 
+// Mark item as purchased/unpurchased
 const togglePurchased = (item) => {
   store.togglePurchased(item.id)
 }
 </script>
 
 <template>
+  <!-- Page header with add/cancel buttons -->
   <div class="header">
     <h1>To-Do List</h1>
     <button v-if="editing" class="btn" @click="doEdit(false)">Cancel</button>
     <button v-else class="btn btn-primary" @click="doEdit(true)">Add Item</button>
   </div>
 
+  <!-- Form to add a new item -->
   <form class="add-item-form" v-if="editing" @submit.prevent="saveItem">
     <div class="input-block">
       <input v-model.trim="newItem" type="text" placeholder="Add an item" maxlength="200" />
@@ -76,6 +88,7 @@ const togglePurchased = (item) => {
     </button>
   </form>
 
+  <!-- Render list of items -->
   <ul>
     <li
       v-for="(item, index) in store.reversedItems"
@@ -96,6 +109,7 @@ const togglePurchased = (item) => {
     </li>
   </ul>
 
+  <!-- Delete confirmation modal -->
   <div v-if="showConfirm" class="modal-overlay">
     <div class="modal">
       <p>
@@ -109,5 +123,6 @@ const togglePurchased = (item) => {
     </div>
   </div>
 
+  <!-- Message for empty list -->
   <p v-if="!store.items.length">Nothing to see here</p>
 </template>
