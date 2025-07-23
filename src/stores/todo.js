@@ -30,6 +30,7 @@ export const useTodoStore = defineStore(
         action: 'Added',
         time: new Date().toLocaleString(),
         user: 'Taiki',
+        highPriority,
       })
     }
 
@@ -41,6 +42,7 @@ export const useTodoStore = defineStore(
           action: 'Deleted',
           time: new Date().toLocaleString(),
           user: 'Taiki',
+          highPriority: item.highPriority,
         })
         items.value = items.value.filter((i) => i.id !== itemId)
       }
