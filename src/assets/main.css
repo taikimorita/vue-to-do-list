@@ -185,18 +185,22 @@ li input {
 
 .priority {
   color: #de751f;
+  font-weight: bold;
 }
 
 .priority:hover {
   color: #b44d00;
+  font-weight: bold;
 }
 
 .strikeout.priority {
   color: #c19d7d;
+  font-weight: bold;
 }
 
 .strikeout.priority:hover {
   color: #a86d3a;
+  font-weight: bold;
 }
 
 input[type='checkbox'] {
