@@ -12,7 +12,9 @@
       </thead>
       <tbody>
         <tr v-for="(record, index) in history" :key="index">
-          <td>{{ record.label }}</td>
+          <td :class="{ 'high-priority-text': record.highPriority }">
+            {{ record.label }}
+          </td>
           <td>{{ record.action }}</td>
           <td>{{ record.time }}</td>
           <td>{{ record.user }}</td>
@@ -40,5 +42,10 @@ td {
   text-align: left;
   padding: 0.5rem;
   border-bottom: 1px solid #ccc;
+}
+
+.high-priority-text {
+  color: #de751f;
+  font-weight: bold;
 }
 </style>
