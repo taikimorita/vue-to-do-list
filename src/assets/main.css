@@ -51,6 +51,18 @@ h1 {
   color: #3d4852;
 }
 
+h2 {
+  color: #3d4852;
+}
+
+th {
+  color: #3d4852;
+}
+
+td {
+  color: #3d4852;
+}
+
 ul {
   list-style: none;
   padding: 0;
@@ -291,4 +303,24 @@ input[type='checkbox'] {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tabs a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #3490dc;
+}
+
+.tabs a.active-tab {
+  border-bottom: 2px solid #3490dc;
+}
+
+.tabs a:hover {
+  color: #005fa3;
 }

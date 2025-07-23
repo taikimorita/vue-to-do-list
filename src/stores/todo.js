@@ -10,6 +10,8 @@ export const useTodoStore = defineStore(
       { id: 3, label: 'Do Homework', purchased: false, highPriority: true },
     ])
 
+    const history = ref([])
+
     const newItemId = computed(() =>
       items.value.length ? Math.max(...items.value.map((i) => i.id)) + 1 : 1,
     )
@@ -23,10 +25,25 @@ export const useTodoStore = defineStore(
         highPriority,
         purchased: false,
       })
+      history.value.push({
+        label,
+        action: 'Added',
+        time: new Date().toLocaleString(),
+        user: 'Taiki',
+      })
     }
 
     function deleteItem(itemId) {
-      items.value = items.value.filter((item) => item.id !== itemId)
+      const item = items.value.find((i) => i.id === itemId)
+      if (item) {
+        history.value.push({
+          label: item.label,
+          action: 'Deleted',
+          time: new Date().toLocaleString(),
+          user: 'Taiki',
+        })
+        items.value = items.value.filter((i) => i.id !== itemId)
+      }
     }
 
     function togglePurchased(itemId) {
@@ -40,6 +57,7 @@ export const useTodoStore = defineStore(
       addItem,
       togglePurchased,
       deleteItem,
+      history,
     }
   },
   {
