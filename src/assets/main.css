@@ -1,7 +1,7 @@
 body {
   /* background: linear-gradient(120deg, #42b883, #35495e); */
-  height: 100vh;
-  width: 60vw;
+  /*height: 100vh;
+  width: 60vw;*/
   font-family:
     system-ui,
     BlinkMacSystemFont,
@@ -149,10 +149,12 @@ li input {
 
 .btn[disabled] {
   background: #8795a1;
+  cursor: default;
 }
 
 .btn[disabled]:hover {
-  background: #606f7b;
+  background: #8795a1;
+  cursor: default;
 }
 
 .btn-primary {
@@ -171,7 +173,7 @@ li input {
 
 .btn-cancel:hover {
   background: #e3342f;
-  color: #fff;
+  /*color: #fff;*/
 }
 
 .strikeout {
