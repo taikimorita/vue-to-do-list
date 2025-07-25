@@ -66,7 +66,7 @@ const togglePurchased = (item) => {
   <!-- Page header with add/cancel buttons -->
   <div class="header">
     <h1>To-Do List</h1>
-    <button v-if="editing" class="btn" @click="doEdit(false)">Cancel</button>
+    <button v-if="editing" class="btn btn-cancel" @click="doEdit(false)">Cancel</button>
     <button v-else class="btn btn-primary" @click="doEdit(true)">Add Item</button>
   </div>
 
@@ -76,8 +76,8 @@ const togglePurchased = (item) => {
       <input v-model.trim="newItem" type="text" placeholder="Add an item" maxlength="200" />
       <div class="form-footer">
         <div class="counter">{{ characterCount }}/200</div>
-        <label class="priority-checkbox">
-          <input type="checkbox" v-model="newItemHighPriority" />
+        <label class="priority-checkbox" for="priority-check">
+          <input id="priority-check" type="checkbox" v-model="newItemHighPriority" />
           High Priority
         </label>
       </div>
@@ -116,7 +116,7 @@ const togglePurchased = (item) => {
         Are you sure you want to delete "<strong>{{ itemToDelete.label }}</strong
         >"?
       </p>
-      <div class="model-buttons">
+      <div class="modal-buttons">
         <button class="btn btn-danger" @click="confirmDelete">Yes</button>
         <button class="btn" @click="cancelDelete">No</button>
       </div>
