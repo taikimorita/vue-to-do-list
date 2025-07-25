@@ -57,7 +57,16 @@ export const useTodoStore = defineStore(
     // Toggle item's purchased status
     function togglePurchased(itemId) {
       const item = items.value.find((i) => i.id === itemId)
-      if (item) item.purchased = !item.purchased
+      if (item) {
+        item.purchased = !item.purchased
+        history.value.push({
+          label: item.label,
+          action: item.purchased ? 'Completed' : 'Restored',
+          time: new Date().toLocaleString(),
+          user: 'Taiki',
+          highPriority: item.highPriority,
+        })
+      }
     }
 
     // Expose state and actions
