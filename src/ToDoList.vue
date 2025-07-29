@@ -2,12 +2,14 @@
 import { ref, computed } from 'vue'
 import { useTodoStore } from './stores/todo'
 import trashIcon from './assets/delete.svg'
+import { onMounted, onUnmounted } from 'vue'
 
 // Input field and flags
 const newItem = ref('')
 const characterCount = computed(() => newItem.value.length)
 const editing = ref(false)
 const newItemHighPriority = ref(false)
+const newItemInput = ref(null)
 
 // Pinia store instance
 const store = useTodoStore()
@@ -17,7 +19,6 @@ const saveItem = () => {
   store.addItem(newItem.value, newItemHighPriority.value)
   newItem.value = ''
   newItemHighPriority.value = false
-  document.activeElement.blur()
 }
 
 // Start or cancel edit mode
@@ -26,6 +27,26 @@ const doEdit = (e) => {
   newItem.value = ''
   newItemHighPriority.value = false
 }
+
+// Ctrl+K shortcut selects input box
+const handleKeydown = (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault()
+    if (editing.value) newItemInput.value?.focus()
+  } else if (e.key === 'Escape') {
+    if (document.activeElement === newItemInput.value) {
+      newItemInput.value.blur()
+    }
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 
 // Modal confirmation state
 const showConfirm = ref(false)
@@ -73,7 +94,13 @@ const togglePurchased = (item) => {
   <!-- Form to add a new item -->
   <form class="add-item-form" v-if="editing" @submit.prevent="saveItem">
     <div class="input-block">
-      <input v-model.trim="newItem" type="text" placeholder="Add an item" maxlength="200" />
+      <input
+        ref="newItemInput"
+        v-model.trim="newItem"
+        type="text"
+        placeholder="Add an item"
+        maxlength="200"
+      />
       <div class="form-footer">
         <div class="counter">{{ characterCount }}/200</div>
         <label class="priority-checkbox" for="priority-check">
