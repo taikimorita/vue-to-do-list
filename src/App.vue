@@ -3,7 +3,7 @@
     <!-- Navigation tabs for routing between pages -->
     <header class="tabs">
       <router-link to="/" exact-active-class="active-tab">To-Do List</router-link>
-      <router-link to="/history" exact-active-class="active-tab">Item History</router-link>
+      <router-link to="/history" exact-active-class="active-tab">Task History</router-link>
     </header>
 
     <!-- Display routed component here -->

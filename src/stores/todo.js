@@ -4,8 +4,8 @@ import { ref, computed } from 'vue'
 export const useTodoStore = defineStore(
   'todo',
   () => {
-    // List of current to-do items
-    const items = ref([
+    // List of current to-do tasks
+    const tasks = ref([
       { id: 1, label: 'Clean Bathroom', purchased: true, highPriority: false },
       { id: 2, label: 'Get Groceries', purchased: true, highPriority: false },
       { id: 3, label: 'Do Homework', purchased: false, highPriority: true },
@@ -15,17 +15,17 @@ export const useTodoStore = defineStore(
     const history = ref([])
 
     // Generate next available ID
-    const newItemId = computed(() =>
-      items.value.length ? Math.max(...items.value.map((i) => i.id)) + 1 : 1,
+    const newTaskId = computed(() =>
+      tasks.value.length ? Math.max(...tasks.value.map((i) => i.id)) + 1 : 1,
     )
 
-    // Show most recent items first
-    const reversedItems = computed(() => [...items.value].reverse())
+    // Show most recent tasks first
+    const reversedTasks = computed(() => [...tasks.value].reverse())
 
-    // Add new item and log to history
-    function addItem(label, highPriority) {
-      items.value.push({
-        id: newItemId.value,
+    // Add new task and log to history
+    function addTask(label, highPriority) {
+      tasks.value.push({
+        id: newTaskId.value,
         label,
         highPriority,
         purchased: false,
@@ -39,43 +39,43 @@ export const useTodoStore = defineStore(
       })
     }
 
-    // Delete item and log to history
-    function deleteItem(itemId) {
-      const item = items.value.find((i) => i.id === itemId)
-      if (item) {
+    // Delete task and log to history
+    function deleteTask(taskId) {
+      const task = tasks.value.find((i) => i.id === taskId)
+      if (task) {
         history.value.push({
-          label: item.label,
+          label: task.label,
           action: 'Deleted',
           time: new Date().toLocaleString(),
           user: 'Taiki',
-          highPriority: item.highPriority,
+          highPriority: task.highPriority,
         })
-        items.value = items.value.filter((i) => i.id !== itemId)
+        tasks.value = tasks.value.filter((i) => i.id !== taskId)
       }
     }
 
-    // Toggle item's purchased status
-    function togglePurchased(itemId) {
-      const item = items.value.find((i) => i.id === itemId)
-      if (item) {
-        item.purchased = !item.purchased
+    // Toggle task's completed status
+    function togglePurchased(taskId) {
+      const task = tasks.value.find((i) => i.id === taskId)
+      if (task) {
+        task.purchased = !task.purchased
         history.value.push({
-          label: item.label,
-          action: item.purchased ? 'Completed' : 'Restored',
+          label: task.label,
+          action: task.purchased ? 'Completed' : 'Restored',
           time: new Date().toLocaleString(),
           user: 'Taiki',
-          highPriority: item.highPriority,
+          highPriority: task.highPriority,
         })
       }
     }
 
     // Expose state and actions
     return {
-      items,
-      reversedItems,
-      addItem,
+      tasks,
+      reversedTasks,
+      addTask,
       togglePurchased,
-      deleteItem,
+      deleteTask,
       history,
     }
   },

@@ -5,37 +5,37 @@ import trashIcon from './assets/delete.svg'
 import { onMounted, onUnmounted } from 'vue'
 
 // Input field and flags
-const newItem = ref('')
-const characterCount = computed(() => newItem.value.length)
+const newTask = ref('')
+const characterCount = computed(() => newTask.value.length)
 const editing = ref(false)
-const newItemHighPriority = ref(false)
-const newItemInput = ref(null)
+const newTaskHighPriority = ref(false)
+const newTaskInput = ref(null)
 
 // Pinia store instance
 const store = useTodoStore()
 
-// Save a new item to the store
-const saveItem = () => {
-  store.addItem(newItem.value, newItemHighPriority.value)
-  newItem.value = ''
-  newItemHighPriority.value = false
+// Save a new task to the store
+const saveTask = () => {
+  store.addTask(newTask.value, newTaskHighPriority.value)
+  newTask.value = ''
+  newTaskHighPriority.value = false
 }
 
 // Start or cancel edit mode
 const doEdit = (e) => {
   editing.value = e
-  newItem.value = ''
-  newItemHighPriority.value = false
+  newTask.value = ''
+  newTaskHighPriority.value = false
 }
 
 // Ctrl+K shortcut selects input box
 const handleKeydown = (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
     e.preventDefault()
-    if (editing.value) newItemInput.value?.focus()
+    if (editing.value) newTaskInput.value?.focus()
   } else if (e.key === 'Escape') {
-    if (document.activeElement === newItemInput.value) {
-      newItemInput.value.blur()
+    if (document.activeElement === newTaskInput.value) {
+      newTaskInput.value.blur()
     }
   }
 }
@@ -50,36 +50,36 @@ onUnmounted(() => {
 
 // Modal confirmation state
 const showConfirm = ref(false)
-const itemToDelete = ref(null)
+const taskToDelete = ref(null)
 
 // Show confirm modal or delete immediately if Ctrl is held
-const askDelete = (item, event) => {
+const askDelete = (task, event) => {
   if (event.ctrlKey) {
-    store.deleteItem(item.id)
+    store.deleteTask(task.id)
   } else {
-    itemToDelete.value = item
+    taskToDelete.value = task
     showConfirm.value = true
   }
 }
 
 // Confirm deletion after modal prompt
 const confirmDelete = () => {
-  if (itemToDelete.value) {
-    store.deleteItem(itemToDelete.value.id)
+  if (taskToDelete.value) {
+    store.deleteTask(taskToDelete.value.id)
   }
   showConfirm.value = false
-  itemToDelete.value = null
+  taskToDelete.value = null
 }
 
 // Cancel the deletion prompt
 const cancelDelete = () => {
   showConfirm.value = false
-  itemToDelete.value = null
+  taskToDelete.value = null
 }
 
-// Mark item as purchased/unpurchased
-const togglePurchased = (item) => {
-  store.togglePurchased(item.id)
+// Mark task as purchased/unpurchased
+const togglePurchased = (task) => {
+  store.togglePurchased(task.id)
 }
 </script>
 
@@ -88,49 +88,49 @@ const togglePurchased = (item) => {
   <div class="header">
     <h1>To-Do List</h1>
     <button v-if="editing" class="btn btn-cancel" @click="doEdit(false)">Cancel</button>
-    <button v-else class="btn btn-primary" @click="doEdit(true)">Add Item</button>
+    <button v-else class="btn btn-primary" @click="doEdit(true)">Add Task</button>
   </div>
 
-  <!-- Form to add a new item -->
-  <form class="add-item-form" v-if="editing" @submit.prevent="saveItem">
+  <!-- Form to add a new task -->
+  <form class="add-task-form" v-if="editing" @submit.prevent="saveTask">
     <div class="input-block">
       <input
-        ref="newItemInput"
-        v-model.trim="newItem"
+        ref="newTaskInput"
+        v-model.trim="newTask"
         type="text"
-        placeholder="Add an item"
+        placeholder="Add a task"
         maxlength="200"
       />
       <div class="form-footer">
         <div class="counter">{{ characterCount }}/200</div>
         <label class="priority-checkbox" for="priority-check">
-          <input id="priority-check" type="checkbox" v-model="newItemHighPriority" />
+          <input id="priority-check" type="checkbox" v-model="newTaskHighPriority" />
           High Priority
         </label>
       </div>
     </div>
 
-    <button type="submit" :disabled="newItem.length === 0" class="btn btn-primary">
-      Save Item
+    <button type="submit" :disabled="newTask.length === 0" class="btn btn-primary">
+      Save Task
     </button>
   </form>
 
-  <!-- Render list of items -->
+  <!-- Render list of tasks -->
   <ul>
     <li
-      v-for="(item, index) in store.reversedItems"
-      :key="item.id"
-      class="todo-item static-class"
-      :class="{ strikeout: item.purchased, priority: item.highPriority }"
+      v-for="(task, index) in store.reversedTasks"
+      :key="task.id"
+      class="todo-task static-class"
+      :class="{ strikeout: task.purchased, priority: task.highPriority }"
     >
-      <span @click="togglePurchased(item)">
-        {{ item.label }}
+      <span @click="togglePurchased(task)">
+        {{ task.label }}
       </span>
       <img
         :src="trashIcon"
         alt="Delete"
         class="trash"
-        @click.stop="askDelete(item, $event)"
+        @click.stop="askDelete(task, $event)"
         title="Delete"
       />
     </li>
@@ -140,7 +140,7 @@ const togglePurchased = (item) => {
   <div v-if="showConfirm" class="modal-overlay">
     <div class="modal">
       <p>
-        Are you sure you want to delete "<strong>{{ itemToDelete.label }}</strong
+        Are you sure you want to delete "<strong>{{ taskToDelete.label }}</strong
         >"?
       </p>
       <div class="modal-buttons">
@@ -151,5 +151,5 @@ const togglePurchased = (item) => {
   </div>
 
   <!-- Message for empty list -->
-  <p v-if="!store.items.length">Nothing to see here</p>
+  <p v-if="!store.tasks.length">Nothing to see here</p>
 </template>

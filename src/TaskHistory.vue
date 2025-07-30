@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h2>Item History</h2>
+    <h2>Task History</h2>
     <table>
       <thead>
         <tr>
-          <th>Item</th>
+          <th>Task</th>
           <th>Action</th>
           <th>Timestamp</th>
           <th>Submitted By</th>
@@ -46,7 +46,7 @@ td {
   border-bottom: 1px solid #ccc;
 }
 
-/* Highlight high-priority items */
+/* Highlight high-priority tasks */
 .high-priority-text {
   color: #de751f;
   font-weight: bold;

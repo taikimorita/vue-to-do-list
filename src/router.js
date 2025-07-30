@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import App from './App.vue'
 import ToDoList from './ToDoList.vue'
-import ItemHistory from './ItemHistory.vue'
+import TaskHistory from './TaskHistory.vue'
 
 // Define routes for app
 const routes = [
@@ -11,7 +11,7 @@ const routes = [
   },
   {
     path: '/history',
-    component: ItemHistory,
+    component: TaskHistory,
   },
 ]
 
