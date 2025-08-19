@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import App from './App.vue'
 import ToDoList from './ToDoList.vue'
 import TaskHistory from './TaskHistory.vue'
+import ImageUpload from './ImageUpload.vue'
 
 // Define routes for app
 const routes = [
@@ -12,6 +12,10 @@ const routes = [
   {
     path: '/history',
     component: TaskHistory,
+  },
+  {
+    path: '/upload',
+    component: ImageUpload,
   },
 ]
 

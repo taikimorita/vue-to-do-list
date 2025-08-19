@@ -14,13 +14,22 @@ export const useTodoStore = defineStore(
     // Record of all actions performed
     const history = ref([])
 
+    // Image uploads (persisted)
+    const uploads = ref([])
+
     // Generate next available ID
     const newTaskId = computed(() =>
       tasks.value.length ? Math.max(...tasks.value.map((i) => i.id)) + 1 : 1,
     )
 
+    const newUploadId = computed(() =>
+      uploads.value.length ? Math.max(...uploads.value.map((u) => u.id)) + 1 : 1,
+    )
+
     // Show most recent tasks first
     const reversedTasks = computed(() => [...tasks.value].reverse())
+
+    const reversedUploads = computed(() => [...uploads.value].reverse())
 
     // Add new task and log to history
     function addTask(label, highPriority) {
@@ -37,6 +46,39 @@ export const useTodoStore = defineStore(
         user: 'Taiki',
         highPriority,
       })
+    }
+
+    // Add an upload (dataUrl, caption)
+    function addUpload(dataUrl, caption) {
+      uploads.value.push({
+        id: newUploadId.value,
+        url: dataUrl,
+        caption: caption || '',
+        time: new Date().toLocaleString(),
+        user: 'Taiki',
+      })
+      history.value.push({
+        label: caption || '(image)',
+        action: 'Image Added',
+        time: new Date().toLocaleString(),
+        user: 'Taiki',
+        highPriority: false,
+      })
+    }
+
+    // Delete upload
+    function deleteUpload(uploadId) {
+      const u = uploads.value.find((x) => x.id === uploadId)
+      if (u) {
+        history.value.push({
+          label: u.caption || '(image)',
+          action: 'Image Deleted',
+          time: new Date().toLocaleString(),
+          user: 'Taiki',
+          highPriority: false,
+        })
+        uploads.value = uploads.value.filter((x) => x.id !== uploadId)
+      }
     }
 
     // Delete task and log to history
@@ -77,6 +119,12 @@ export const useTodoStore = defineStore(
       togglePurchased,
       deleteTask,
       history,
+
+      // uploads API
+      uploads,
+      reversedUploads,
+      addUpload,
+      deleteUpload,
     }
   },
   {

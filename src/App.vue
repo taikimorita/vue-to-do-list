@@ -4,6 +4,7 @@
     <header class="tabs">
       <router-link to="/" exact-active-class="active-tab">To-Do List</router-link>
       <router-link to="/history" exact-active-class="active-tab">Task History</router-link>
+      <router-link to="/upload" exact-active-class="active-tab">Image Upload</router-link>
     </header>
 
     <!-- Display routed component here -->
