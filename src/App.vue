@@ -5,6 +5,7 @@
       <router-link to="/" exact-active-class="active-tab">To-Do List</router-link>
       <router-link to="/history" exact-active-class="active-tab">Task History</router-link>
       <router-link to="/upload" exact-active-class="active-tab">Image Upload</router-link>
+      <router-link to="/matrix" exact-active-class="active-tab">Eligibility Matrix</router-link>
     </header>
 
     <!-- Display routed component here -->
