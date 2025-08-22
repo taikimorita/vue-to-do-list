@@ -1,9 +1,7 @@
 <template>
   <div class="eligibility-matrix">
-    <h1 class="title">ESP Eligibility Matrix</h1>
-
-    <!-- add row button -->
-    <div class="toolbar">
+    <div class="header-row">
+      <h1 class="title">ESP Eligibility Matrix</h1>
       <DxButton icon="add" text="Add Row" type="default" styling-mode="contained" @click="addRow" />
     </div>
 
@@ -115,10 +113,16 @@ function getStatusClass(status) {
 .eligibility-matrix {
   padding: 20px;
 }
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
 .title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin: 0;
 }
 .toolbar {
   text-align: right;
