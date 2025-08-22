@@ -16,7 +16,9 @@
     "pinia-plugin-persistedstate": "^4.4.1",
     "router": "^2.2.0",
     "vue": "^3.5.17",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "devextreme": "24.2.6",
+    "devextreme-vue": "24.2.6"
   },
   "devDependencies": {
     "@nightwatch/vue": "^3.1.2",
@@ -30,6 +32,7 @@
     "ts-node": "^10.9.2",
     "vite": "^7.0.0",
     "vite-plugin-nightwatch": "^0.4.6",
-    "vite-plugin-vue-devtools": "^7.7.7"
+    "vite-plugin-vue-devtools": "^7.7.7",
+    "devextreme-themebuilder": "24.2.6"
   }
 }

@@ -1,71 +1,112 @@
 <template>
   <div class="eligibility-matrix">
     <h1 class="title">ESP Eligibility Matrix</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Country</th>
-          <th>Status</th>
-          <th>File</th>
-          <th>Description</th>
-          <th></th>
-          <th>Type</th>
-          <th></th>
-          <th>Custodian</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, rowIndex) in rows" :key="rowIndex">
-          <td
-            v-for="(col, colIndex) in row"
-            :key="colIndex"
-            @dblclick="editCell(rowIndex, colIndex)"
-            :class="getCellClass(colIndex, col)"
-          >
-            <input
-              v-if="editingCell.row === rowIndex && editingCell.col === colIndex"
-              v-model="rows[rowIndex][colIndex]"
-              @blur="stopEditing"
-              @keyup.enter="stopEditing"
-              autofocus
-            />
-            <span v-else>{{ col }}</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+    <!-- add row button -->
+    <div class="toolbar">
+      <DxButton icon="add" text="Add Row" type="default" styling-mode="contained" @click="addRow" />
+    </div>
+
+    <!-- data grid -->
+    <DxDataGrid :data-source="rows" key-expr="id" show-borders="true" :editing="editing">
+      <!-- columns -->
+      <DxColumn data-field="country" caption="Country" />
+      <DxColumn data-field="status" caption="Status" cell-template="statusCell" />
+      <DxColumn data-field="file" caption="File" />
+      <DxColumn data-field="description" caption="Description" />
+      <DxColumn caption="" data-field="blank1" />
+      <DxColumn data-field="type" caption="Type" />
+      <DxColumn caption="" data-field="blank2" />
+      <DxColumn data-field="custodian" caption="Custodian" />
+
+      <!-- popup editing -->
+      <DxEditing
+        mode="popup"
+        allow-adding="true"
+        allow-updating="true"
+        allow-deleting="true"
+        :popup="popupOptions"
+        :form="formOptions"
+      />
+
+      <!-- custom status template -->
+      <template #statusCell="{ data }">
+        <span :class="getStatusClass(data.status)">
+          {{ data.status }}
+        </span>
+      </template>
+    </DxDataGrid>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import DxDataGrid, { DxColumn, DxEditing } from 'devextreme-vue/data-grid'
+import DxButton from 'devextreme-vue/button'
 
 const rows = ref([
-  ['Australia', 'DEV', '.pdf', '', '', 'ENABLED', '', ''],
-  ['Austria', 'WITH SME', '.pdf', '', '', 'ENABLED', '', ''],
-  ['Belgium', 'PUBLISHED', '.pdf', '', '', 'ENABLED', '', ''],
+  {
+    id: 1,
+    country: 'Australia',
+    status: 'DEV',
+    file: '.pdf',
+    description: '',
+    blank1: '',
+    type: 'ENABLED',
+    blank2: '',
+    custodian: '',
+  },
+  {
+    id: 2,
+    country: 'Austria',
+    status: 'WITH SME',
+    file: '.pdf',
+    description: '',
+    blank1: '',
+    type: 'ENABLED',
+    blank2: '',
+    custodian: '',
+  },
+  {
+    id: 3,
+    country: 'Belgium',
+    status: 'PUBLISHED',
+    file: '.pdf',
+    description: '',
+    blank1: '',
+    type: 'ENABLED',
+    blank2: '',
+    custodian: '',
+  },
 ])
 
-const editingCell = ref({ row: null, col: null })
-
-function editCell(row, col) {
-  editingCell.value = { row, col }
+const editing = {
+  mode: 'popup',
+  allowAdding: true,
+  allowUpdating: true,
+  allowDeleting: true,
 }
 
-function stopEditing() {
-  editingCell.value = { row: null, col: null }
+const popupOptions = {
+  title: 'Add / Edit Row',
+  showTitle: true,
+  width: 700,
+  height: 400,
 }
 
-function getCellClass(colIndex, value) {
-  if (colIndex === 1) {
-    // Status column
-    if (value === 'DEV') return 'status-dev'
-    if (value === 'WITH SME') return 'status-sme'
-    if (value === 'PUBLISHED') return 'status-published'
-  }
-  if (colIndex === 5) {
-    if (value === 'ENABLED') return 'status-enabled'
-  }
+const formOptions = {
+  colCount: 2,
+  items: ['country', 'status', 'file', 'description', 'blank1', 'type', 'blank2', 'custodian'],
+}
+
+function addRow() {
+  // triggers popup to add a new row
+}
+
+function getStatusClass(status) {
+  if (status === 'DEV') return 'status-dev'
+  if (status === 'WITH SME') return 'status-sme'
+  if (status === 'PUBLISHED') return 'status-published'
   return ''
 }
 </script>
@@ -74,51 +115,26 @@ function getCellClass(colIndex, value) {
 .eligibility-matrix {
   padding: 20px;
 }
-
 .title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+}
+.toolbar {
+  text-align: right;
+  margin-bottom: 10px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-}
-
-td {
-  cursor: pointer;
-}
-
-input {
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* Status colors */
+/* status colors */
 .status-dev {
-  color: #3490dc;
+  color: blue;
   font-weight: bold;
 }
-
 .status-sme {
   color: goldenrod;
   font-weight: bold;
 }
-
 .status-published {
-  color: green;
-  font-weight: bold;
-}
-
-.status-enabled {
   color: green;
   font-weight: bold;
 }

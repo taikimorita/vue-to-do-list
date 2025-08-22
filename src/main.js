@@ -1,3 +1,4 @@
+import 'devextreme/dist/css/dx.light.css';
 import './assets/main.css'
 import './assets/snow.less'
 
