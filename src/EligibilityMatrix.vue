@@ -1,23 +1,24 @@
 <template>
   <div class="eligibility-matrix">
-    <div class="header-row">
-      <h1 class="title">ESP Eligibility Matrix</h1>
-      <DxButton icon="add" text="Add Row" type="default" styling-mode="contained" @click="addRow" />
-    </div>
-
-    <!-- data grid -->
-    <DxDataGrid :data-source="rows" key-expr="id" show-borders="true" :editing="editing">
-      <!-- columns -->
-      <DxColumn data-field="country" caption="Country" />
-      <DxColumn data-field="status" caption="Status" cell-template="statusCell" />
-      <DxColumn data-field="file" caption="File" />
+    <DxDataGrid
+      ref="gridRef"
+      :data-source="rows"
+      key-expr="id"
+      show-borders="true"
+      :editing="editing"
+    >
+      <DxColumn data-field="country" caption="Country of Issuance" />
+      <DxColumn data-field="file" caption="Filename" />
       <DxColumn data-field="description" caption="Description" />
-      <DxColumn caption="" data-field="blank1" />
-      <DxColumn data-field="type" caption="Type" />
-      <DxColumn caption="" data-field="blank2" />
-      <DxColumn data-field="custodian" caption="Custodian" />
+      <DxColumn
+        data-field="status"
+        caption="Status"
+        :lookup="{ dataSource: statusOptions, valueExpr: 'value', displayExpr: 'text' }"
+      />
 
-      <!-- popup editing -->
+      <!-- Button column to edit Exceptions -->
+      <DxColumn caption="Exceptions" :cell-template="exceptionTemplate" width="120" />
+
       <DxEditing
         mode="popup"
         allow-adding="true"
@@ -26,57 +27,83 @@
         :popup="popupOptions"
         :form="formOptions"
       />
-
-      <!-- custom status template -->
-      <template #statusCell="{ data }">
-        <span :class="getStatusClass(data.status)">
-          {{ data.status }}
-        </span>
-      </template>
     </DxDataGrid>
+
+    <!-- Separate Popup for Exceptions -->
+    <DxPopup
+      v-model:visible="exceptionPopupVisible"
+      :title="'Exception Editor'"
+      :width="500"
+      :height="400"
+    >
+      <DxForm :form-data="currentException" :col-count="2" :items="exceptionFormItems" />
+      <div class="popup-buttons">
+        <DxButton text="Cancel" onClick="closeExceptionPopup" />
+        <DxButton text="Save Changes" type="success" onClick="saveException" />
+      </div>
+    </DxPopup>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import DxDataGrid, { DxColumn, DxEditing } from 'devextreme-vue/data-grid'
+import DxDataGrid, { DxColumn, DxEditing, DxLookup } from 'devextreme-vue/data-grid'
 import DxButton from 'devextreme-vue/button'
+
+const gridRef = ref(null)
 
 const rows = ref([
   {
     id: 1,
     country: 'Australia',
-    status: 'DEV',
-    file: '.pdf',
-    description: '',
-    blank1: '',
+    status: true,
+    file: 'AU_20220101_1.pdf',
+    description: 'General Eligibility Matrix for Australia.',
+    exceptions: '',
     type: 'ENABLED',
-    blank2: '',
     custodian: '',
+    eventType: null,
+    effectiveStartDate: '2025-01-01',
+    effectiveEndDate: '2025-06-30',
   },
   {
     id: 2,
     country: 'Austria',
-    status: 'WITH SME',
-    file: '.pdf',
+    status: false,
+    file: '',
     description: '',
-    blank1: '',
+    exceptions: 'Pending review',
     type: 'ENABLED',
-    blank2: '',
     custodian: '',
+    eventType: 'Equity',
+    effectiveStartDate: '2025-03-01',
+    effectiveEndDate: '2025-08-01',
   },
   {
     id: 3,
     country: 'Belgium',
-    status: 'PUBLISHED',
-    file: '.pdf',
-    description: '',
-    blank1: '',
+    status: true,
+    file: 'BE_20220101_1.pdf',
+    description: 'Eligibility Matrix for Belgium events.',
+    exceptions: '',
     type: 'ENABLED',
-    blank2: '',
     custodian: '',
+    eventType: 'Debt',
+    effectiveStartDate: '2025-02-15',
+    effectiveEndDate: '2025-09-15',
   },
 ])
+
+const custodianOptions = [
+  { value: 'JPMorgan Chase', text: 'JPMorgan Chase' },
+  { value: 'Wells Fargo', text: 'Wells Fargo' },
+  { value: 'Goldman Sachs', text: 'Goldman Sachs' },
+]
+
+const eventTypeOptions = [
+  { value: 'Equity', text: 'Equity' },
+  { value: 'Debt', text: 'Debt' },
+]
 
 const editing = {
   mode: 'popup',
@@ -94,11 +121,41 @@ const popupOptions = {
 
 const formOptions = {
   colCount: 2,
-  items: ['country', 'status', 'file', 'description', 'blank1', 'type', 'blank2', 'custodian'],
+  items: [
+    'country',
+    'status',
+    'file',
+    'description',
+    'exceptions',
+    {
+      dataField: 'eventType',
+      editorType: 'dxSelectBox',
+      editorOptions: {
+        items: eventTypeOptions,
+        valueExpr: 'value',
+        displayExpr: 'text',
+        placeholder: 'Select Event Type',
+      },
+    },
+    {
+      dataField: 'custodian',
+      editorType: 'dxSelectBox',
+      editorOptions: {
+        items: custodianOptions,
+        valueExpr: 'value',
+        displayExpr: 'text',
+        placeholder: 'Select Custodian',
+      },
+    },
+    'effectiveStartDate',
+    'effectiveEndDate',
+  ],
 }
 
 function addRow() {
-  // triggers popup to add a new row
+  if (gridRef.value?.instance) {
+    gridRef.value.instance.addRow()
+  }
 }
 
 function getStatusClass(status) {
