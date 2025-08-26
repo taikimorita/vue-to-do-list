@@ -17,7 +17,12 @@
       />
 
       <!-- Button column to edit Exceptions -->
-      <DxColumn caption="Exceptions" :cell-template="exceptionTemplate" width="120" />
+      <DxColumn
+        caption="Exceptions"
+        :cell-template="exceptionTemplate"
+        width="120"
+        :hidden="true"
+      />
 
       <DxEditing
         mode="popup"
