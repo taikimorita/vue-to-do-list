@@ -21,7 +21,7 @@
         caption="Exceptions"
         :cell-template="exceptionTemplate"
         width="120"
-        :hidden="true"
+        :visible="false"
       />
 
       <DxEditing
@@ -78,7 +78,6 @@ const rows = ref([
     file: '',
     description: '',
     exceptions: 'Pending review',
-    type: 'ENABLED',
     custodian: '',
     eventType: 'Equity',
     effectiveStartDate: '2025-03-01',
@@ -91,7 +90,6 @@ const rows = ref([
     file: 'BE_20220101_1.pdf',
     description: 'Eligibility Matrix for Belgium events.',
     exceptions: '',
-    type: 'ENABLED',
     custodian: '',
     eventType: 'Debt',
     effectiveStartDate: '2025-02-15',
