@@ -26,8 +26,8 @@
       <!-- columns (matrix stays the same) -->
       <DxColumn data-field="country" caption="Country" />
       <DxColumn data-field="file" caption="File" />
-      <DxColumn data-field="description" caption="Description" />
-      <DxColumn data-field="status" caption="Status" data-type="boolean" />
+      <DxColumn data-field="description" caption="Description" :width="350" />
+      <DxColumn data-field="status" caption="Status" data-type="boolean" :width="75" />
       <DxColumn data-field="CUSIPs" caption="CUSIPs" />
       <DxColumn data-field="eventType" caption="Event Type">
         <DxLookup :data-source="eventTypeOptions" value-expr="value" display-expr="text" />
@@ -1055,6 +1055,9 @@ const formOptions = {
         displayExpr: 'text',
         placeholder: 'Select Country',
         searchEnabled: true,
+        dropDownOptions: {
+          height: 200,
+        },
       },
     },
     'status',
@@ -1120,10 +1123,6 @@ function addRow() {
 </script>
 
 <style scoped>
-.eligibility-matrix {
-  padding: 20px;
-}
-
 .header-row {
   display: flex;
   align-items: center;
@@ -1135,5 +1134,15 @@ function addRow() {
   font-size: 24px;
   font-weight: bold;
   margin: 0;
+}
+
+.eligibility-matrix {
+  padding: 20px;
+}
+</style>
+
+<style>
+#app {
+  max-width: initial !important;
 }
 </style>
