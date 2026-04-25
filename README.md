@@ -1,52 +1,13 @@
 # vue-to-do-list
 
-This template should help get you started developing with Vue 3 in Vite.
+A task management app built with Vue 3 featuring a to-do interface with create, edit, and delete functionality, and an action history log that tracks all changes.
 
-## Recommended IDE Setup
+## Tech Stack
+- Frontend: Vue 3, Vite, DevExtreme
+- Testing: Nightwatch.js (end-to-end)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Setup
+````npm install```
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run End-to-End Tests with [Nightwatch](https://nightwatchjs.org/)
-
-```sh
-# When using CI, the project must be built first.
-npm run build
-
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chrome
-npm run test:e2e -- --env chrome
-# Runs the tests of a specific file
-npm run test:e2e -- tests/e2e/example.js
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
-```
-
-### Run Headed Component Tests with [Nightwatch Component Testing](https://nightwatchjs.org/guide/component-testing/introduction.html)
-
-```sh
-npm run test:unit
-npm run test:unit -- --headless # for headless testing
+```npm run dev```
 ```
