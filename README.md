@@ -10,4 +10,3 @@ A task management app built with Vue 3 featuring a to-do interface with create, 
 ````npm install```
 
 ```npm run dev```
-```
