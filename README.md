@@ -7,6 +7,10 @@ A task management app built with Vue 3 featuring a to-do interface with create, 
 - Testing: Nightwatch.js (end-to-end)
 
 ## Setup
-````npm install```
+```
+npm install
+```
 
-```npm run dev```
+```
+npm run dev
+```
